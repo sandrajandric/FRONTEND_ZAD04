@@ -22,6 +22,8 @@ import BookSearchPage from './BookSearchPage';
 import { useAuth, ProvideAuth} from './useAuth';
 import { Formik } from 'formik';
 import { TextField } from '@mui/material';
+import { useAuthSU, ProvideAuthSU} from './signUpAuth';
+import { passwordYupSchema } from './validationTools';
 
 
 const AuthButton = () => {
@@ -33,6 +35,18 @@ const AuthButton = () => {
       }}>Sign out</Button>
   }else{
       return <Button variant="contained" component={RouterLink} to="/login">Log in</Button>
+  }
+}
+
+const RegisterButton = () => {
+  const [login, error, signin, signout] = useAuth();
+  const history = useHistory();
+  if(login){
+      return <Button variant="contained" onClick={() => {
+          signout( () => history.push("/"));            
+      }}>Sign out</Button>
+  }else{
+      return <Button variant="contained" component={RouterLink} to="/register">Registracija novog korisnika</Button>
   }
 }
 
@@ -56,19 +70,19 @@ const PrivateRoute = ({children, ...rest}) => {
 
 const LoginBox = () => {
   const history = useHistory();
-//  const location = useLocation();
+  const location = useLocation();
   const [login, error, signin, signout] = useAuth();
   
-//  let {from} = location.state || { from : { pathname: "/"}};
+  let {from} = location.state || { from : { pathname: "/"}};
   return <div className="loginBox">
       <h3>Login Forma</h3>
       <Formik
           initialValues={{username: "", password: ""}}
           onSubmit={(values, { setSubmitting }) => {
-              signin(values.username, values.password, () => {
+              signin(values.username, values.password, values.passwordConfirmation, () => {
                   setSubmitting(false);
               }, () => {
-               //   history.replace(from);
+                  history.replace(from);
               });
           }}
       >
@@ -117,6 +131,79 @@ const LoginBox = () => {
   </div>
 }
 
+const RegisterBox = () => {
+  const history = useHistory();
+  const location = useLocation();
+  const [login, error, signin, signout] = useAuth();
+  
+  let {from} = location.state || { from : { pathname: "/"}};
+  return <div className="loginBox">
+      <h3>Register Forma</h3>
+      <Formik
+          initialValues={{username: "", password: "", passwordConfirmation: ""}}
+          validationSchema={passwordYupSchema}
+          onSubmit={(values, { setSubmitting }) => {
+              signin(values.username, values.password, values.passwordConfirmation, () => {
+                  setSubmitting(false);
+              }, () => {
+                  history.replace(from);
+              });
+          }}
+      >
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            setFieldValue,
+            setFieldTouched,
+            validateField,
+            isSubmitting
+          }) => (
+              <form onSubmit={handleSubmit}>
+                  <TextField
+                    fullWidth 
+                    variant="outlined" 
+                    name="username" 
+                    value={values.username} 
+                    label="Korisničko ime" 
+                    onChange={handleChange}
+                  /><br/>
+                  <TextField 
+                    fullWidth
+                    variant="outlined" 
+                    name="password" 
+                    value={values.password} 
+                    label="Lozinka" 
+                    onChange={handleChange}
+                    type="password"                    
+                  /><br/>
+                  <TextField 
+                    fullWidth
+                    variant="outlined" 
+                    name="passwordConfirmation" 
+                    value={values.passwordConfirmation} 
+                    label="Potvrdi lozinku" 
+                    onChange={handleChange}
+                    type="password"                    
+                  /><br/>
+                  <Button 
+                    fullWidth 
+                    variant="contained" 
+                    type="submit" 
+                    disabled={isSubmitting}
+                  >
+                    Log in
+                  </Button>
+                  <div>{(error) ? error : ""}</div>
+              </form>
+          )}
+      </Formik>
+  </div>
+}
+
 const AddBookPage = () => {
   const [login] = useAuth();
   return <BookDetails startingMode="create" action={(book) => addBook(book, login)}/>
@@ -137,11 +224,16 @@ function App() {
               </Button>
               <span style={{flexGrow: 1}}/>
               <AuthButton></AuthButton>
+              <span style={{flexGrow: 1}}/>
+              <RegisterButton></RegisterButton>
             </nav>
             <div className="mainContent">
               <Switch>
                 <Route path="/login">
                   <LoginBox/>
+                </Route>
+                <Route path="/register">
+                  <RegisterBox/>
                 </Route>
                 <PrivateRoute path="/allbooks">
                   <AllBooksPage/>
