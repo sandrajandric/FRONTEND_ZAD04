@@ -144,13 +144,20 @@ const RegisterBox = () => {
           
           onSubmit={(values, { setSubmitting }) => {
             countChrOccurence(values.password);
-            if (values.password=== values.passwordConfirmation) {
-              postNewUser(values.username, values.password, () => {
-                setSubmitting(false);
-                history.replace(from);
-
-            }, () => {
-            });
+            if (values.password === values.passwordConfirmation) {
+              if (passwordStrength(values.password) >= 4) {
+                  postNewUser(values.username, values.password);
+                  signin(values.username, values.password, () => {
+                    setSubmitting(false);
+                }, () => {
+                    history.replace(from);
+                });
+              } else {
+                alert("Lozinka mora biti minimum 60% ukupnog kvaliteta!")
+              if (window.confirm) {
+                return<Redirect to={{pathname: "/register", state: {from: location}}}/>
+              }
+              }
             } else {
               alert("Lozinke moraju da budu jednake!")
               if (window.confirm) {
@@ -171,7 +178,7 @@ const RegisterBox = () => {
             validateField,
             isSubmitting
           }) => (<div>
-              <form onSubmit={handleSubmit}>
+              <form name="username" onSubmit={handleSubmit}>
                   <TextField
                     fullWidth 
                     variant="outlined" 

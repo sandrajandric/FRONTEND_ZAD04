@@ -11,21 +11,19 @@ export function countChrOccurence (password) {
     let charMap = new Map();
     const count = 0;
      for (const key of password) {
-      charMap.set(key,count); // initialize every character with 0. this would make charMap to be 'h'=> 0, 'e' => 0, 'l' => 0, 
+      charMap.set(key,count); 
      }
    
      for (const key of password) {
        let count = charMap.get(key);
        charMap.set(key, count + 1);
      }
-   // 'h' => 1, 'e' => 1, 'l' => 2, 'o' => 1
    
      for (const [key,value] of charMap) {
-       if (value >= 2) {
+       if (value >= (password.length / 4)) {
            alert("Ponovili ste karakter " + key + " previse puta.")
        }
      }
-   // ['h',1],['e',1],['l',2],['o',1]
    }  
    
 /*export const toStandardTime = (time) => {
@@ -49,10 +47,9 @@ export function passwordStrength (password) {
     score = 0;
 
     if (password.length < minLength) {
-     return rank.TOO_SHORT; // End early
+     return rank.TOO_SHORT;
     }
 
-    // Increment the score for each of these conditions
     if (upper.test(password)) score++;
     if (lower.test(password)) score++;
     if (number.test(password)) score++;
@@ -64,13 +61,10 @@ export function passwordStrength (password) {
     }
 
 
-    // Return a ranking based on the calculated score
-    if (score < 3) return rank.WEAK; // score is 2 or lower
-    if (score < 4) return rank.MEDIUM; // score is 3
-    if (score < 6) return rank.STRONG; // score is 4 or 5
+    if (score < 3) return rank.WEAK;
+    if (score < 4) return rank.MEDIUM;
+    if (score < 6) return rank.STRONG;
  
     
-    return rank.VERY_STRONG; // score is 6 or higher
+    return rank.VERY_STRONG;
 }
-
-
