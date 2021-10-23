@@ -250,3 +250,18 @@ export const useBook = (id, url="http://localhost:3081/app/book") => {
 
     return [book, loading];
 }
+export const postNewUser = async (username, password, url="http://localhost:3081/app/register") => {
+    const resp = await fetch(`${url}/new`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: {
+            username: username,
+            password: password
+        }
+    });
+    const data = await resp.json();
+    if(data.status === "ok") return [true, ""];
+    else return [false, data.body]
+}

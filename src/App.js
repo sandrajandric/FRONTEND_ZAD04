@@ -15,7 +15,7 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
-import { addBook } from './accessHooks';
+import { addBook, postNewUser } from './accessHooks';
 import BookDetailsPage from './BookDetailsPage';
 import BookSearchPage from './BookSearchPage';
 
@@ -23,7 +23,7 @@ import { useAuth, ProvideAuth} from './useAuth';
 import { Formik } from 'formik';
 import { TextField } from '@mui/material';
 import { useAuthSU, ProvideAuthSU} from './signUpAuth';
-import { passwordYupSchema } from './validationTools';
+import { passwordYupSchema, passwordStrength, countChrOccurence } from './validationTools';
 
 
 const AuthButton = () => {
@@ -79,7 +79,7 @@ const LoginBox = () => {
       <Formik
           initialValues={{username: "", password: ""}}
           onSubmit={(values, { setSubmitting }) => {
-              signin(values.username, values.password, values.passwordConfirmation, () => {
+              signin(values.username, values.password, () => {
                   setSubmitting(false);
               }, () => {
                   history.replace(from);
@@ -142,12 +142,18 @@ const RegisterBox = () => {
       <Formik
           initialValues={{username: "", password: "", passwordConfirmation: ""}}
           validationSchema={passwordYupSchema}
+          
           onSubmit={(values, { setSubmitting }) => {
-              signin(values.username, values.password, values.passwordConfirmation, () => {
+            countChrOccurence(values.password);
+            if (values.password=== values.passwordConfirmation) {
+                postNewUser(values.username, values.password);
                   setSubmitting(false);
-              }, () => {
-                  history.replace(from);
-              });
+            } else {
+              alert("Lozinke moraju da budu jednake!")
+              if (window.confirm) {
+                return<Redirect to={{pathname: "/register", state: {from: location}}}/>
+              }
+            }
           }}
       >
           {({
@@ -161,7 +167,7 @@ const RegisterBox = () => {
             setFieldTouched,
             validateField,
             isSubmitting
-          }) => (
+          }) => (<div>
               <form onSubmit={handleSubmit}>
                   <TextField
                     fullWidth 
@@ -178,7 +184,10 @@ const RegisterBox = () => {
                     value={values.password} 
                     label="Lozinka" 
                     onChange={handleChange}
-                    type="password"                    
+                    type="password" 
+                    onBlur={handleBlur}
+                    error={touched.password && Boolean(errors.password)}
+                    helperText={touched.password && errors.password}                   
                   /><br/>
                   <TextField 
                     fullWidth
@@ -187,18 +196,23 @@ const RegisterBox = () => {
                     value={values.passwordConfirmation} 
                     label="Potvrdi lozinku" 
                     onChange={handleChange}
-                    type="password"                    
-                  /><br/>
+                    type="password"  
+                    onBlur={handleBlur}
+                    /><br/>
                   <Button 
                     fullWidth 
                     variant="contained" 
                     type="submit" 
                     disabled={isSubmitting}
                   >
-                    Log in
+                    REGISTER
                   </Button>
                   <div>{(error) ? error : ""}</div>
               </form>
+              <form>
+                  <meter onChange={handleChange} min="0" max="4" low="1" optimum="3" value={passwordStrength(values.password)}/>
+              </form>
+              </div>
           )}
       </Formik>
   </div>
