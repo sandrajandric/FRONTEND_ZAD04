@@ -250,18 +250,43 @@ export const useBook = (id, url="http://localhost:3081/app/book") => {
 
     return [book, loading];
 }
-export const postNewUser = async (username, password, url="http://localhost:3081/app/register") => {
-    const resp = await fetch(`${url}/new`, {
+export const postNewUser = async (username, password, failCallback = () => {}, okCallback = () => {}) => {
+    fetch("http://localhost:3081/app/register", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
         },
-        body: {
-            username: username,
-            password: password
-        }
-    });
-    const data = await resp.json();
-    if(data.status === "ok") return [true, ""];
-    else return [false, data.body]
+        body: JSON.stringify({username: username, password: password})
+        }).then(response => response.json())
+        .then(data => {
+            if(data.status === "ok") return [true, ""];
+            else return [false, data.body]
+        })
+    
 }
+
+/*const signin = (username, password, failCallback = () => {}, okCallback = () => {}) => {
+    fetch("http://localhost:3081/app/register", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({username: username, password: password})
+    }).then(response => response.json())
+    .then(data => {
+        if(data.status != "ok"){
+            setLogin(null);
+            setError(data.body);
+            failCallback();    
+        }else{
+            setLogin(data.body);
+            setError(""); 
+            okCallback();
+        }
+    })
+    .catch(err => {
+        setLogin(null);
+        setError(err);
+        failCallback();
+    });
+}*/

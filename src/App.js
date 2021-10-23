@@ -22,7 +22,6 @@ import BookSearchPage from './BookSearchPage';
 import { useAuth, ProvideAuth} from './useAuth';
 import { Formik } from 'formik';
 import { TextField } from '@mui/material';
-import { useAuthSU, ProvideAuthSU} from './signUpAuth';
 import { passwordYupSchema, passwordStrength, countChrOccurence } from './validationTools';
 
 
@@ -146,8 +145,12 @@ const RegisterBox = () => {
           onSubmit={(values, { setSubmitting }) => {
             countChrOccurence(values.password);
             if (values.password=== values.passwordConfirmation) {
-                postNewUser(values.username, values.password);
-                  setSubmitting(false);
+              postNewUser(values.username, values.password, () => {
+                setSubmitting(false);
+                history.replace(from);
+
+            }, () => {
+            });
             } else {
               alert("Lozinke moraju da budu jednake!")
               if (window.confirm) {
