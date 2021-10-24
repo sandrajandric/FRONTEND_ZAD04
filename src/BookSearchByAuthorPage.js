@@ -8,7 +8,7 @@ import { TextField } from "@mui/material";
 import { Box } from "@mui/material";
 import { useAuth } from "./useAuth";
 
-const BookSearchPage = () => {
+const BookSearchByAuthorPage = () => {
     const [query, setQuery] = useState("");
     const [searchQuery, setSearchQuery] = useState("")
     const [login] = useAuth();
@@ -26,18 +26,17 @@ const BookSearchPage = () => {
         pageSize,
         setPageSize,
         reload
-    ] = usePagedSearchBookList(10, searchQuery);
+    ] = usePagedSearchBookListByAuthor(10, searchQuery);
     if(loading){
         return <h3>Loading...</h3>;
     }else{
         return <div>
             <Box sx={{display: "flex", flexDirection:"row", padding: "10px", alignItems: "baseline"}}>
-            <Button component={RouterLink} to="/book/new" variant="contained">Dodaj</Button>
             <TextField
                     sx={{flexGrow: 1, marginLeft: "60px"}}
                     margin="normal"
-                    name="search"
-                    label="Pretraga"
+                    name="searchByAuthor"
+                    label="Pretraga po autoru"
                     value={query}
                     onChange={(e) => {
                         const val = e.target.value;
@@ -67,4 +66,4 @@ const BookSearchPage = () => {
     }
 }
 
-export default BookSearchPage;
+export default BookSearchByAuthorPage;

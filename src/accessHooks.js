@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import { useAuth } from './useAuth';
 import { Redirect } from 'react-router';
+import { SettingsInputAntennaTwoTone } from '@mui/icons-material';
+
 
 export const usePagedBookList = (initialPageSize, url="http://localhost:3081/app/books") => {
     const [pageSize, setPageSize] = useState(initialPageSize);
@@ -10,6 +12,7 @@ export const usePagedBookList = (initialPageSize, url="http://localhost:3081/app
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [login] = useAuth();
+
     
     const load = () => {
         fetch(`${url}/${location}/${location + pageSize}`, {
@@ -189,7 +192,7 @@ export const usePagedSearchBookList = (initialPageSize, query, url="http://local
 
 
 
-export const usePagedSearchBookListByAuthor = (initialPageSize, query, url="http://localhost:3081/app/books/searchByAuthor") => {
+export const usePagedSearchBookListByAuthor = (initialPageSize, query, url="http://localhost:3081/app/books") => {
     const [pageSize, setPageSize] = useState(initialPageSize);
     const [list, setList] = useState([]);
     const [location, setLocation] = useState(1);
@@ -203,7 +206,7 @@ export const usePagedSearchBookListByAuthor = (initialPageSize, query, url="http
         if(!query || query.length === 0){
             targeturl = `${url}/${location}/${location + pageSize}`;
         }else{
-            targeturl = `${url}/search/${query}/${location}/${location + pageSize}`;
+            targeturl = `${url}/searchByAuthor/${query}/${location}/${location + pageSize}`;
         }
         fetch(targeturl,{
                 method: "GET",

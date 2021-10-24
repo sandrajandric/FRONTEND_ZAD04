@@ -7,12 +7,6 @@ import TextField from '@mui/material/TextField';
 import DatePicker from '@mui/lab/DatePicker'
 import { useHistory } from "react-router-dom";
 import Autocomplete from '@mui/material/Autocomplete';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
-
 
 const BookDetails = ({ startingMode, book, action }) => {
     const [mode, setMode] = useState(startingMode);
@@ -110,7 +104,7 @@ const BookDetails = ({ startingMode, book, action }) => {
                     {(touched.publishDate && Boolean(errors.birthday)) ? errors.publishDate : ""}
                 </span><br/>
                 <TextField
-                    fullWidth
+                  /*  fullWidth
                     margin="normal"
                     name="rating"
                     label="Rating"
@@ -120,16 +114,17 @@ const BookDetails = ({ startingMode, book, action }) => {
                     error={touched.rating && Boolean(errors.rating)}
                     helperText={touched.rating && errors.rating}
                     variant="outlined"
-                    InputProps={inputProps}
+                    InputProps={inputProps} */
                 />
                 <Autocomplete 
-                clearOnEscape 
+              /*  clearOnEscape 
                 options={options} sx={{width : 300}} 
                 renderInput={(params) => 
-                <TextField {...params} label="Genre" />}
+                <TextField {...params} label="Genre" />} */
                 />
                  <TextField
-                    fullWidth
+                 /*   fullWidth
+                    input type="text" pattern="[0-9]*" 
                     margin="normal"
                     name="isbn"
                     label="ISBN"
@@ -139,38 +134,24 @@ const BookDetails = ({ startingMode, book, action }) => {
                     error={touched.isbn && Boolean(errors.isbn)}
                     helperText={touched.isbn && errors.isbn}
                     variant="outlined"
-                    InputProps={inputProps}
+                    InputProps={inputProps} */
                 />
-                 <FormControl component="fieldset">
-                    <FormLabel component="legend">Available</FormLabel>
-                        <RadioGroup 
-                        aria-label="Available"
-                        name="available"
-                      //  value={values.selectedValue ? values.selectedValue : " "}
-                       value={values.available} 
-                       onChange={handleChange}
-                        onBlur={handleBlur}
-                        variant="outlined"
-                        error={touched.isbn && Boolean(errors.isbn)}
-                       // helperText={touched.isbn && errors.isbn}
-                       // InputProps={inputProps}
-                        > <FormControlLabel value="true" control={<Radio />} label="true" />
-                        <FormControlLabel value="false" control={<Radio />} label="false" />
-                      </RadioGroup>
-                 </FormControl> 
                  <TextField
                     fullWidth
                     margin="normal"
                     name="pages"
                     label="Number of pages"
                     value={values.pages}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
+                    onChange={v => {
+                        values.setFieldValue(values.pages, v)
+                    }}
+                    onBlur={values.handleBlur}
                     error={touched.pages && Boolean(errors.pages)}
                     helperText={touched.pages && errors.pages}
                     variant="outlined"
                     InputProps={inputProps}
                 />
+
                 {
                     (mode === "view") ? "" : <Button disabled={isSubmitting} 
                         color="primary" variant="contained" fullWidth type="submit">Snimi</Button>
@@ -183,9 +164,11 @@ const BookDetails = ({ startingMode, book, action }) => {
 };
 
 const options = ["Science Fiction", "Fantasy",  "Computing", "Mystery", "Horror"];
+const availableOpt = ["true", "false"];
 
 BookDetails.defaultProps = {
-    book: { "id": null, title: "" },
+    book: { "id": null, title: "", authors: [], publishDate: "", rating: "", genre: "",
+            isbn: "", available: true, pages: null },
     startingMode: "view"
 }
 

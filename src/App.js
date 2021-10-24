@@ -18,6 +18,7 @@ import '@fontsource/roboto/700.css';
 import { addBook, postNewUser } from './accessHooks';
 import BookDetailsPage from './BookDetailsPage';
 import BookSearchPage from './BookSearchPage';
+import BookSearchByAuthorPage from './BookSearchByAuthorPage';
 
 import { useAuth, ProvideAuth} from './useAuth';
 import { Formik } from 'formik';
@@ -246,6 +247,9 @@ function App() {
               <Button component={RouterLink} to="/searchbooks" variant="contained">
                   Pretraga
               </Button>
+              <Button component={RouterLink} to="/searchbyauthor" variant="contained">
+                  Pretraga po autoru
+              </Button>
               <span style={{flexGrow: 1}}/>
               <AuthButton></AuthButton>
               <span style={{flexGrow: 1}}/>
@@ -265,7 +269,9 @@ function App() {
                 <PrivateRoute path="/searchbooks">
                   <BookSearchPage/>
                 </PrivateRoute>
-      
+                <PrivateRoute path="/searchbyauthor">
+                  <BookSearchByAuthorPage/>
+                </PrivateRoute>
                 <PrivateRoute path="/book/new">
                   <AddBookPage/>
                 </PrivateRoute>
