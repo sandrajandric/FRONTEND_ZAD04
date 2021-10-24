@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Formik } from 'formik'
 import './BookDetails.css';
-//import { customerYupSchema, toStandardTime } from "./validationTools";
+import { bookYupSchema } from "./validationTools";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import DatePicker from '@mui/lab/DatePicker'
@@ -27,7 +27,7 @@ const BookDetails = ({ startingMode, book, action }) => {
         <h3>{message}</h3>
         <Formik
             initialValues={book}
-           // validationSchema={customerYupSchema} 
+            validationSchema={bookYupSchema} 
             onSubmit={(values, {setSubmitting}) => {
                 const rez = action(values);
                 setSubmitting(false);
@@ -73,7 +73,19 @@ const BookDetails = ({ startingMode, book, action }) => {
                     variant="outlined"
                     InputProps={inputProps}
                 />
-                
+                <TextField
+                    fullWidth
+                    margin="normal"
+                    name="authors"
+                    label="Autori"
+                    value={values.authors}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={touched.authors && Boolean(errors.authors)}
+                    helperText={touched.authors && errors.authors}
+                    variant="outlined"
+                    InputProps={inputProps}
+                />
 
             
             </form>

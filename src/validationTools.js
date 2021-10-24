@@ -1,11 +1,27 @@
 import * as yup from 'yup';
-//import { DateTime } from 'luxon';
+import { DateTime } from 'luxon';
 
 
 export const passwordYupSchema = yup.object({
     password: yup.string().required("No password provided")
         .matches(/^(?=.*[A-Z].*[A-Z])(?=.*[a-z].*[a-z])(?=.*[0-9])(?=.*[.,?!:;-]).{12,}$/, "Must contain at least two capital letters, two lowercase letters, one number, one special character")
     });
+
+ export const bookYupSchema = yup.object({
+    id: yup.number().required().positive().integer("ID mora biti ceo broj"),
+    authors: yup.array().required("Mora postojati bar jedan autor"),
+    publishDate: yup.date().max(DateTime.now(), "Ne može datum skoriji od danas"),
+    rating: yup.number().min(1).max(5),
+    genre: yup.string(),
+    title: yup.string().required(),
+    isbn: yup.number().max(9999999999999),
+    available: yup.boolean(),
+    pages: yup.number().required().positive().integer("Broj stranica mora biti ceo broj"),
+ });
+
+ export const toStandardTime = (time) => {
+    return time.toFormat("y-M-dd");
+}
 
 export function countChrOccurence (password) {
     let charMap = new Map();
@@ -26,9 +42,6 @@ export function countChrOccurence (password) {
      }
    }  
    
-/*export const toStandardTime = (time) => {
-    return time.toFormat("y-MM-dd");
-}*/
 
 const rank = {
     TOO_SHORT: 0,
