@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { useAuth } from './useAuth';
+import { Redirect } from 'react-router';
 
 export const usePagedBookList = (initialPageSize, url="http://localhost:3081/app/books") => {
     const [pageSize, setPageSize] = useState(initialPageSize);
@@ -310,18 +311,34 @@ export const updateBook = async (book, login, url="http://localhost:3081/app/boo
     else return [false, data.body]
 }
 
-export const addBook = async (book, login, url="http://localhost:3081/app/books") => {
-    const resp = await fetch(`${url}/new`, {
+export const addBook = async (book, login) => {
+    fetch("http://localhost:3081/app/books/new", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${login.jwt}`
         },
         body: JSON.stringify(book)
-    });
-    const data = await resp.json();
-    if(data.status === "ok") return [true, ""];
-    else return [false, data.body]
+    }).then(response => response.json())
+    .then(data => {
+        if(data.status === "ok") 
+            return [true, <Redirect to={{pathname: "/allbooks"}}/>];
+        else return [false, data.body]
+    })
+}
+export const postNewUser = async (username, password) => {
+    fetch("http://localhost:3081/app/register", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({username: username, password: password})
+        }).then(response => response.json())
+        .then(data => {
+            if(data.status === "ok") return [true, ""];
+            else return [false, data.body]
+        })
+    
 }
 
 export const useBook = (id, url="http://localhost:3081/app/book") => {
@@ -347,18 +364,5 @@ export const useBook = (id, url="http://localhost:3081/app/book") => {
 
     return [book, loading];
 }
-export const postNewUser = async (username, password, failCallback = () => {}, okCallback = () => {}) => {
-    fetch("http://localhost:3081/app/register", {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({username: username, password: password})
-        }).then(response => response.json())
-        .then(data => {
-            if(data.status === "ok") return [true, ""];
-            else return [false, data.body]
-        })
-    
-}
+
 

@@ -1,11 +1,17 @@
 import React, { useState } from "react";
 import { Formik } from 'formik'
 import './BookDetails.css';
-import { bookYupSchema } from "./validationTools";
+import { bookYupSchema, toStandardTime } from "./validationTools";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import DatePicker from '@mui/lab/DatePicker'
 import { useHistory } from "react-router-dom";
+import Autocomplete from '@mui/material/Autocomplete';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 
 
 const BookDetails = ({ startingMode, book, action }) => {
@@ -86,14 +92,97 @@ const BookDetails = ({ startingMode, book, action }) => {
                     variant="outlined"
                     InputProps={inputProps}
                 />
-
-            
+                 <DatePicker
+                    margin="normal"
+                    name="publishDate"
+                    label="Publish date:"
+                    value={values.publishDate}
+                    readOnly={inputProps.readOnly ? true : false}
+                    onChange={(e) => {
+                        setFieldValue("publishDate", toStandardTime(e));
+                        setFieldTouched("publishDate", true, true);
+                        validateField("publishDate");
+                    }}
+                    onBlur={handleBlur}                    
+                    renderInput={(params) => <TextField {...params}/>}
+                />
+                <span>
+                    {(touched.publishDate && Boolean(errors.birthday)) ? errors.publishDate : ""}
+                </span><br/>
+                <TextField
+                    fullWidth
+                    margin="normal"
+                    name="rating"
+                    label="Rating"
+                    value={values.rating}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={touched.rating && Boolean(errors.rating)}
+                    helperText={touched.rating && errors.rating}
+                    variant="outlined"
+                    InputProps={inputProps}
+                />
+                <Autocomplete 
+                clearOnEscape 
+                options={options} sx={{width : 300}} 
+                renderInput={(params) => 
+                <TextField {...params} label="Genre" />}
+                />
+                 <TextField
+                    fullWidth
+                    margin="normal"
+                    name="isbn"
+                    label="ISBN"
+                    value={values.isbn}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={touched.isbn && Boolean(errors.isbn)}
+                    helperText={touched.isbn && errors.isbn}
+                    variant="outlined"
+                    InputProps={inputProps}
+                />
+                 <FormControl component="fieldset">
+                    <FormLabel component="legend">Available</FormLabel>
+                        <RadioGroup 
+                        aria-label="Available"
+                        name="available"
+                      //  value={values.selectedValue ? values.selectedValue : " "}
+                       value={values.available} 
+                       onChange={handleChange}
+                        onBlur={handleBlur}
+                        variant="outlined"
+                        error={touched.isbn && Boolean(errors.isbn)}
+                       // helperText={touched.isbn && errors.isbn}
+                       // InputProps={inputProps}
+                        > <FormControlLabel value="true" control={<Radio />} label="true" />
+                        <FormControlLabel value="false" control={<Radio />} label="false" />
+                      </RadioGroup>
+                 </FormControl> 
+                 <TextField
+                    fullWidth
+                    margin="normal"
+                    name="pages"
+                    label="Number of pages"
+                    value={values.pages}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={touched.pages && Boolean(errors.pages)}
+                    helperText={touched.pages && errors.pages}
+                    variant="outlined"
+                    InputProps={inputProps}
+                />
+                {
+                    (mode === "view") ? "" : <Button disabled={isSubmitting} 
+                        color="primary" variant="contained" fullWidth type="submit">Snimi</Button>
+                }
             </form>
             )}
             
         </Formik>        
     </div>
 };
+
+const options = ["Science Fiction", "Fantasy",  "Computing", "Mystery", "Horror"];
 
 BookDetails.defaultProps = {
     book: { "id": null, title: "" },

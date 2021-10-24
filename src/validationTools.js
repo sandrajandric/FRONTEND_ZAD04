@@ -9,12 +9,12 @@ export const passwordYupSchema = yup.object({
 
  export const bookYupSchema = yup.object({
     id: yup.number().required().positive().integer("ID mora biti ceo broj"),
-    authors: yup.array().required("Mora postojati bar jedan autor"),
+    authors: yup.string().required("Mora postojati bar jedan autor"),
     publishDate: yup.date().max(DateTime.now(), "Ne može datum skoriji od danas"),
     rating: yup.number().min(1).max(5),
     genre: yup.string(),
     title: yup.string().required(),
-    isbn: yup.number().max(9999999999999),
+    isbn: yup.number().max(9999999999999, "ISBN mora sadrzati 13 cifara").min(1000000000000, "ISBN mora sadrzati 13 cifara"),
     available: yup.boolean(),
     pages: yup.number().required().positive().integer("Broj stranica mora biti ceo broj"),
  });
