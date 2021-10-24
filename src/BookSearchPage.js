@@ -1,5 +1,5 @@
 import React, {useState, useMemo, useRef, useEffect} from "react";
-import { usePagedBookList, deleteBook, usePagedSearchBookList} from "./accessHooks";
+import { usePagedBookList, deleteBook, usePagedSearchBookList, usePagedSearchBookListByAuthor} from "./accessHooks";
 import BookList from "./BookList";
 import TablePagination from '@mui/material/TablePagination';
 import { Button } from "@mui/material";
@@ -32,7 +32,7 @@ const BookSearchPage = () => {
     }else{
         return <div>
             <Box sx={{display: "flex", flexDirection:"row", padding: "10px", alignItems: "baseline"}}>
-            <Button component={RouterLink} to="/customer/new" variant="contained">Dodaj</Button>
+            <div><Button component={RouterLink} to="/book/new" variant="contained">Dodaj</Button>
             <TextField
                     sx={{flexGrow: 1, marginLeft: "60px"}}
                     margin="normal"
@@ -46,6 +46,19 @@ const BookSearchPage = () => {
                     variant="outlined"
                 />
                 <Button sx={{marginLeft: "20px"}} variant="contained" onClick={() => setSearchQuery(query)}>Pokreni pretragu</Button>
+                
+                <TextField
+                    sx={{flexGrow: 1, marginLeft: "60px"}}
+                    margin="normal"
+                    name="search"
+                    label="Pretraga po autoru"
+                    value={query}
+                    onChange={(e) => {
+                        const val = e.target.value;
+                        setQuery(val);
+                    }}
+                    variant="outlined"
+                /></div>
                 </Box>
             <BookList list={list} onDelete={(id) => {
                 deleteBook(id, login);

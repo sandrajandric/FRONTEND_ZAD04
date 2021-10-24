@@ -9,6 +9,8 @@ import Paper from '@mui/material/Paper';
 import { Tab } from "@mui/material";
 import { Button } from "@mui/material";
 import TableDropdown from "./TableDropdown";
+import Rating from '@mui/material/Rating';
+import StarIcon from '@mui/icons-material/Star'
 
 
 const BookList = ({list, onDelete}) => {
@@ -19,6 +21,7 @@ const BookList = ({list, onDelete}) => {
           <TableRow>
             <TableCell>ID</TableCell>
             <TableCell>Title</TableCell>
+            <TableCell>Authors</TableCell>
             <TableCell></TableCell>
           </TableRow>
         </TableHead>
@@ -32,7 +35,8 @@ const BookList = ({list, onDelete}) => {
                 {row.id}
               </TableCell>
               <TableCell>{row.title}</TableCell>
-              <TableCell>
+              <TableCell>{row.authors}</TableCell>
+              <TableCell><Rating value={row.rating} readOnly precision={0.5} emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}/>
                   <TableDropdown text="..."
                   items={
                       [

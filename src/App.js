@@ -262,9 +262,10 @@ function App() {
                 <PrivateRoute path="/allbooks">
                   <AllBooksPage/>
                 </PrivateRoute>
-                <PrivateRoute path="/searchbook">
+                <PrivateRoute path="/searchbooks">
                   <BookSearchPage/>
                 </PrivateRoute>
+      
                 <PrivateRoute path="/book/new">
                   <AddBookPage/>
                 </PrivateRoute>
