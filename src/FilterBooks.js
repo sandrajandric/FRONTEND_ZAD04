@@ -8,7 +8,7 @@ import {Link as RouterLink} from 'react-router-dom';
 import {useAuth} from './useAuth';
 import { filter } from "@mui/icons-material";
 
-const AllBooksPage = () => {
+const FilterBooksPage = (opcija) => {
     const [
         list,
         location,
@@ -25,26 +25,26 @@ const AllBooksPage = () => {
         reload
     ] = usePagedBookList(10);
     const [login] = useAuth();
+    const lista = list.filter((book) => book.genre === opcija)
 
     if(loading){
         return <h3>Loading...</h3>;
     }else{
         return <div>
-            <Button component={RouterLink} to="/book/new" variant="contained">Dodaj</Button>            
-            <BookList list={list} onDelete={(id) => {
+            <BookList list={lista} onDelete={(id) => {
                 deleteBook(id, login);
                 reload();
                 }}/>
             <TablePagination
                 component="div"
-                count={length}
+                count={lista.length}
                 page={page-1}
                 onPageChange={(e, p) => goToPage(p)}
                 rowsPerPage={pageSize}
                 onRowsPerPageChange={(e) => {
                     setPageSize(parseInt(e.target.value, 10));
                 }}
-                labelDisplayedRows={({from, to, count, page}) => `Prikazujem stranicu ${page+1} (${from}-${to+1} od ukupno ${count})`}
+                labelDisplayedRows={({from, to, count, page}) => `Prikazujem stranicu ${page+1} (${from}-${to} od ukupno ${count})`}
                 labelRowsPerPage="Redova po stranici: "
             />
         </div>
@@ -52,4 +52,4 @@ const AllBooksPage = () => {
 }
 
 
-export default AllBooksPage;
+export default FilterBooksPage;

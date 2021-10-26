@@ -8,22 +8,26 @@ import { BrowserRouter as Router, Link as RouterLink,
   Switch, Route, useHistory, Redirect, 
   useLocation} from 'react-router-dom';
 
-import { Button } from '@mui/material';
+import { Autocomplete, Button } from '@mui/material';
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
-import { addBook, postNewUser } from './accessHooks';
+import { addBook, postNewUser} from './accessHooks';
 import BookDetailsPage from './BookDetailsPage';
 import BookSearchPage from './BookSearchPage';
 import BookSearchByAuthorPage from './BookSearchByAuthorPage';
+import { usePagedBookList } from './accessHooks';
 
 import { useAuth, ProvideAuth} from './useAuth';
 import { Formik } from 'formik';
 import { TextField } from '@mui/material';
 import { passwordYupSchema, passwordStrength, countChrOccurence } from './validationTools';
+import BookList from './BookList';
+import FilterBooksPage from './FilterBooks';
+import { useState } from 'react';
 
 
 const AuthButton = () => {
@@ -234,8 +238,14 @@ const AddBookPage = () => {
   return <BookDetails startingMode="create" action={(book) => addBook(book, login)}/>
 }
 
+const Filtriraj = (izbor) => {
+  return <FilterBooksPage opcija={izbor}/>
+}
+
 function App() {
+
   return (
+
     <LocalizationProvider dateAdapter={AdapterLuxon}>
       <ProvideAuth>
       <Router>
@@ -250,9 +260,17 @@ function App() {
               <Button component={RouterLink} to="/searchbyauthor" variant="contained">
                   Pretraga po autoru
               </Button>
-              <span style={{flexGrow: 1}}/>
               <AuthButton></AuthButton>
-              <span style={{flexGrow: 1}}/>
+              <div>
+              <Autocomplete clearOnEscape 
+                options={optionss} 
+                getOptionSelected={(option) => option.label}
+                sx={{width : 300}} 
+                renderInput={(params) => 
+                <TextField {...params} label="Genre" />}
+                onSubmit={Filtriraj()}/>
+              <Button component={RouterLink} to="/filterbygenre" >Filtriraj</Button>
+              </div>
               <RegisterButton></RegisterButton>
             </nav>
             <div className="mainContent">
@@ -278,6 +296,9 @@ function App() {
                 <PrivateRoute path="/book/:cid/:operation">
                   <BookDetailsPage/>
                 </PrivateRoute>
+                <PrivateRoute path="/filterbygenre">
+                  <FilterBooksPage/>
+                </PrivateRoute>
                 <Route path="/">
                   <h1>Primer integrisanog sajta</h1>
                 </Route>
@@ -289,5 +310,14 @@ function App() {
     </LocalizationProvider>
   );
 }
+
+const optionss = [
+  {label: "Science Fiction"},
+  {label: "Fantasy"},
+  {label:  "Computing"},
+  {label: "Mystery"},
+  {label: "Horror"}];
+
+
 
 export default App;
