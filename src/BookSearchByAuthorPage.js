@@ -59,7 +59,7 @@ const BookSearchByAuthorPage = () => {
                 onRowsPerPageChange={(e) => {
                     setPageSize(parseInt(e.target.value, 10));
                 }}
-                labelDisplayedRows={({from, to, count, page}) => `Prikazujem stranicu ${page+1} (${from}-${to+1} od ukupno ${count})`}
+                labelDisplayedRows={({from, to, count, page}) => `Prikazujem stranicu ${page+1} (${from}-${to} od ukupno ${count})`}
                 labelRowsPerPage="Redova po stranici: "
             />
         </div>

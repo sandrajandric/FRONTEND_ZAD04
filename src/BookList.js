@@ -11,48 +11,40 @@ import { Button } from "@mui/material";
 import TableDropdown from "./TableDropdown";
 import Rating from '@mui/material/Rating';
 import StarIcon from '@mui/icons-material/Star'
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
+import './BookList.css';
 
 
-const BookList = ({list, onDelete}) => {
-    return <div>
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }}>
-        <TableHead>
-          <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell>Title</TableCell>
-            <TableCell>Authors</TableCell>
-            <TableCell></TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {list.map((row) => (
-            <TableRow
-              key={row.id}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {row.id}
-              </TableCell>
-              <TableCell>{row.title}</TableCell>
-              <TableCell>{row.authors}</TableCell>
-              <TableCell><Rating value={row.rating} readOnly precision={0.5} emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}/>
-                  <TableDropdown text="..."
+
+
+ const BookList = ({list, onDelete}) => {
+    return (<div className="booklist">
+      {list.map((e) => (
+            <div className="card" key={e.id}>
+              <Card  variant="outlined">
+              <CardContent>
+                <h4>{e.title}</h4>
+                <h5>{e.authors}</h5>
+                <span className="span">
+                  <Rating className="rating" value={Number(e.rating)} readOnly precision={0.5} emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}/>
+                  <TableDropdown className="dropdown" text="..."
                   items={
                       [
-                        {text: "Pregledaj...", link: true, path: `/book/${row.id}/view`},
-                        {text: "Izmeni...", link: true, path: `/book/${row.id}/edit`},
-                        {text: "Obrisi", link: false, action: () => onDelete(row.id)}
+                        {text: "Pregledaj...", link: true, path: `/book/${e.id}/view`},
+                        {text: "Izmeni...", link: true, path: `/book/${e.id}/edit`},
+                        {text: "Obrisi", link: false, action: () => onDelete(e.id)}
                       ]
                   }
                   />
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-    </div>
-}
+                  </span>
+              </CardContent>
+              </Card>
+              </div>
+      ))} </div>)
+} 
 
 export default BookList;

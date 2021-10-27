@@ -2,24 +2,23 @@ import AdapterLuxon from '@mui/lab/AdapterLuxon';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
 import './App.css';
-import BookDetails from './BookDetails';
+import BookDetailsEdit from './BookDetailsEdit';
 import AllBooksPage from './AllBooksPage';
 import { BrowserRouter as Router, Link as RouterLink, 
   Switch, Route, useHistory, Redirect, 
   useLocation} from 'react-router-dom';
 
-import { Autocomplete, Button } from '@mui/material';
+import { Autocomplete, Button, Toolbar } from '@mui/material';
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
-import { addBook, postNewUser} from './accessHooks';
+import { addBook, postNewUser, usePagedBookList, deleteBook} from './accessHooks';
 import BookDetailsPage from './BookDetailsPage';
 import BookSearchPage from './BookSearchPage';
 import BookSearchByAuthorPage from './BookSearchByAuthorPage';
-import { usePagedBookList } from './accessHooks';
 
 import { useAuth, ProvideAuth} from './useAuth';
 import { Formik } from 'formik';
@@ -28,6 +27,10 @@ import { passwordYupSchema, passwordStrength, countChrOccurence } from './valida
 import BookList from './BookList';
 import FilterBooksPage from './FilterBooks';
 import { useState } from 'react';
+import TablePagination from '@mui/material/TablePagination';
+import AppBar from '@mui/material/AppBar'
+import { Box } from '@mui/system';
+
 
 
 const AuthButton = () => {
@@ -46,11 +49,11 @@ const RegisterButton = () => {
   const [login, error, signin, signout] = useAuth();
   const history = useHistory();
   if(login){
-      return <Button variant="contained" onClick={() => {
+      return <Button  onClick={() => {
           signout( () => history.push("/"));            
-      }}>Sign out</Button>
+      }}>Registracija</Button>
   }else{
-      return <Button variant="contained" component={RouterLink} to="/register">Registracija novog korisnika</Button>
+      return <Button component={RouterLink} to="/register">Registracija</Button>
   }
 }
 
@@ -128,6 +131,11 @@ const LoginBox = () => {
                   >
                     Log in
                   </Button>
+                  <span className="registracija"> 
+                    <h4 >Nemate nalog?</h4>
+                    <RegisterButton/>
+                  </span>
+                  
                   <div>{(error) ? error : ""}</div>
               </form>
           )}
@@ -235,43 +243,38 @@ const RegisterBox = () => {
 
 const AddBookPage = () => {
   const [login] = useAuth();
-  return <BookDetails startingMode="create" action={(book) => addBook(book, login)}/>
-}
-
-const Filtriraj = (izbor) => {
-  return <FilterBooksPage opcija={izbor}/>
+  return <BookDetailsEdit startingMode="create" action={(book) => addBook(book, login)}/>
 }
 
 function App() {
-
   return (
 
     <LocalizationProvider dateAdapter={AdapterLuxon}>
       <ProvideAuth>
       <Router>
           <div className="main">
-            <nav className="mainNav">
+            <nav>
+            <Box sx={{ flexGrow: 1 }}>
+            <AppBar position="sticky">
+             <Toolbar >
               <Button component={RouterLink} to="/allbooks" variant="contained" sx={{marginRight: "10px"}}>
                   Sve knjige
               </Button>
               <Button component={RouterLink} to="/searchbooks" variant="contained">
-                  Pretraga
+                Pretraga
               </Button>
               <Button component={RouterLink} to="/searchbyauthor" variant="contained">
-                  Pretraga po autoru
+              Pretraga po autoru
               </Button>
-              <AuthButton></AuthButton>
-              <div>
-              <Autocomplete clearOnEscape 
-                options={optionss} 
-                getOptionSelected={(option) => option.label}
-                sx={{width : 300}} 
-                renderInput={(params) => 
-                <TextField {...params} label="Genre" />}
-                onSubmit={Filtriraj()}/>
-              <Button component={RouterLink} to="/filterbygenre" >Filtriraj</Button>
-              </div>
-              <RegisterButton></RegisterButton>
+              <Button  component={RouterLink} to="/filterbooks" variant="contained">
+                Filter
+              </Button>
+
+              <AuthButton/>
+              
+            </Toolbar>
+              </AppBar>
+              </Box>
             </nav>
             <div className="mainContent">
               <Switch>
@@ -296,11 +299,11 @@ function App() {
                 <PrivateRoute path="/book/:cid/:operation">
                   <BookDetailsPage/>
                 </PrivateRoute>
-                <PrivateRoute path="/filterbygenre">
+                <PrivateRoute path="/filterbooks">
                   <FilterBooksPage/>
                 </PrivateRoute>
                 <Route path="/">
-                  <h1>Primer integrisanog sajta</h1>
+                  <h1>EVIDENCIJA O KNJIGAMA</h1>
                 </Route>
               </Switch>
             </div>
@@ -313,11 +316,13 @@ function App() {
 
 const optionss = [
   {label: "Science Fiction"},
-  {label: "Fantasy"},
+  {label:  "Fantasy"},
   {label:  "Computing"},
-  {label: "Mystery"},
-  {label: "Horror"}];
+  {label:  "Mystery"},
+  {label:  "Horror"}];
 
 
 
 export default App;
+
+/*  */

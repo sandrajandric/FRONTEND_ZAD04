@@ -8,7 +8,7 @@ import DatePicker from '@mui/lab/DatePicker'
 import { useHistory } from "react-router-dom";
 import Autocomplete from '@mui/material/Autocomplete';
 
-const BookDetails = ({ startingMode, book, action }) => {
+const BookDetailsEdit = ({ startingMode, book, action }) => {
     const [mode, setMode] = useState(startingMode);
     const history = useHistory();
     let message = "";
@@ -86,18 +86,21 @@ const BookDetails = ({ startingMode, book, action }) => {
                     variant="outlined"
                     InputProps={inputProps}
                 />
-                <TextField
+                <p/>
+                <Autocomplete
                     fullWidth
                     margin="normal"
                     name="genre"
                     label="Genre"
+                    options={options}
                     value={values.genre}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                        setFieldValue(e);
+                        setFieldTouched("genre", true, true);
+                        validateField("genre");
+                    }}
                     onBlur={handleBlur}
-                    error={touched.genre && Boolean(errors.genre)}
-                    helperText={touched.genre && errors.genre}
-                    variant="outlined"
-                    InputProps={inputProps}
+                    renderInput={(params) => <TextField {...params}/>}
                 />
                 <p/>
                  <DatePicker
@@ -158,20 +161,6 @@ const BookDetails = ({ startingMode, book, action }) => {
                     variant="outlined"
                     InputProps={inputProps}
                 />
-                 <TextField
-                    fullWidth
-                    input type="text" 
-                    margin="normal"
-                    name="available"
-                    label="Available"
-                    value={values.available}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={touched.available && Boolean(errors.available)}
-                    helperText={touched.available && errors.available}
-                    variant="outlined"
-                    InputProps={inputProps} 
-                />
 
                 {
                     (mode === "view") ? "" : <Button disabled={isSubmitting} 
@@ -184,10 +173,13 @@ const BookDetails = ({ startingMode, book, action }) => {
     </div>
 };
 
-BookDetails.defaultProps = {
+const options = ["Science Fiction", "Fantasy",  "Computing", "Mystery", "Horror"];
+const availableOpt = ["true", "false"];
+
+BookDetailsEdit.defaultProps = {
     book: { "id": null, title: "", authors: [], publishDate: "", rating: "", genre: "",
             isbn: "", available: true, pages: null },
     startingMode: "view"
 }
 
-export default BookDetails;
+export default BookDetailsEdit;

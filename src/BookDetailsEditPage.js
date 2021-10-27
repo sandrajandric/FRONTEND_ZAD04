@@ -1,14 +1,12 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useBook, updateBook } from './accessHooks';
-import BookDetails from './BookDetails';
 import BookDetailsEdit from './BookDetailsEdit';
 import { useAuth } from './useAuth';
 import { CircularProgress } from '@mui/material';
-import { useState } from 'react';
 
 
-const BookDetailsPage = () => {
+const BookDetailsEditPage = () => {
     const {cid, operation} = useParams();
     const [book, loading] = useBook(cid);
     const [login] = useAuth();
@@ -16,7 +14,7 @@ const BookDetailsPage = () => {
     if(loading){
         return <CircularProgress/>
     }else{
-            return <BookDetails 
+            return <BookDetailsEdit
             book={book} 
             startingMode={operation}
             action={(operation === "edit") ? (book) => updateBook(book, login) : undefined}
@@ -24,4 +22,4 @@ const BookDetailsPage = () => {
     }
 };
 
-export default BookDetailsPage;
+export default BookDetailsEditPage;

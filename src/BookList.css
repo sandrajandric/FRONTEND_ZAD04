@@ -1,0 +1,49 @@
+.booklist{
+    display: flex;
+    flex-wrap: wrap;
+    margin: 5px;
+    row-gap: 2rem;
+    column-gap: 2rem;
+  }
+
+  .card{
+    width: 6cm;
+    height: 6cm;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    overflow: auto;
+  }
+  
+  .card h4 {
+    text-align: center;
+    font-size: 1rem;
+    font-size: 1rem;
+    margin: 2px;
+    margin-bottom: 5px;
+  }
+
+  .card h5 {
+    text-align: center;
+    color: #8c8c8c;
+    font-size: 0.75rem;
+    margin: 1px;
+  }
+
+  .span {
+      margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .rating {
+    align-self: baseline;
+    margin-left: 7px;
+  }
+  
+  .dropdown {
+    align-self: flex-end;
+    margin-right: 7px;
+  }
+

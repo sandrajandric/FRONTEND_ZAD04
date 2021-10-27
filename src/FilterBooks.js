@@ -2,13 +2,11 @@ import React, {useState} from "react";
 import { usePagedBookList, deleteBook} from "./accessHooks";
 import BookList from "./BookList";
 import TablePagination from '@mui/material/TablePagination';
-import { Button } from "@mui/material";
-import {Link as RouterLink} from 'react-router-dom';
+
 
 import {useAuth} from './useAuth';
-import { filter } from "@mui/icons-material";
 
-const FilterBooksPage = (opcija) => {
+const FilterBooksPage = () => {
     const [
         list,
         location,
@@ -25,12 +23,17 @@ const FilterBooksPage = (opcija) => {
         reload
     ] = usePagedBookList(10);
     const [login] = useAuth();
-    const lista = list.filter((book) => book.genre === opcija)
+
 
     if(loading){
         return <h3>Loading...</h3>;
     }else{
-        return <div>
+        return (<div>
+            x
+            {console.log(list)}
+        </div>
+        ) /*<div>
+            
             <BookList list={lista} onDelete={(id) => {
                 deleteBook(id, login);
                 reload();
@@ -47,7 +50,8 @@ const FilterBooksPage = (opcija) => {
                 labelDisplayedRows={({from, to, count, page}) => `Prikazujem stranicu ${page+1} (${from}-${to} od ukupno ${count})`}
                 labelRowsPerPage="Redova po stranici: "
             />
-        </div>
+        </div> */
+        
     }
 }
 
