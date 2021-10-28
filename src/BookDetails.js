@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Formik } from 'formik'
+import { Form, Formik } from 'formik'
 import './BookDetails.css';
 import { bookYupSchema, toStandardTime } from "./validationTools";
 import Button from '@mui/material/Button';
@@ -7,10 +7,16 @@ import TextField from '@mui/material/TextField';
 import DatePicker from '@mui/lab/DatePicker'
 import { useHistory } from "react-router-dom";
 import Autocomplete from '@mui/material/Autocomplete';
+import { FormControl, FormControlLabel } from "@mui/material";
+import { RadioGroup } from "@mui/material";
+import Radio from '@mui/material/Radio';
 
 const BookDetails = ({ startingMode, book, action }) => {
     const [mode, setMode] = useState(startingMode);
+    const [input, setInput] = useState('');
+
     const history = useHistory();
+
     let message = "";
     let inputProps = {}
     let hideID = false;
@@ -93,10 +99,14 @@ const BookDetails = ({ startingMode, book, action }) => {
                     label="Genre"
                     options={options}
                     value={values.genre}
-                    onChange={(e) => {
-                        setFieldValue(e);
+                    onChange={(e, v) => {
+                        setFieldValue("genre", v);
                         setFieldTouched("genre", true, true);
                         validateField("genre");
+                    }}
+                    inputValue={input}
+                    onInputChange={(e, v) => {
+                        setInput(v)
                     }}
                     onBlur={handleBlur}
                     renderInput={(params) => <TextField {...params}/>}
@@ -124,7 +134,7 @@ const BookDetails = ({ startingMode, book, action }) => {
                     margin="normal"
                     name="rating"
                     label="Rating"
-                    value={Number(values.rating)}
+                    value={(values.rating)}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     error={touched.rating && Boolean(errors.rating)}
@@ -160,20 +170,24 @@ const BookDetails = ({ startingMode, book, action }) => {
                     variant="outlined"
                     InputProps={inputProps}
                 />
-                 <TextField
-                    fullWidth
-                    input type="text" 
+                 <FormControl>
+                    <RadioGroup
                     margin="normal"
                     name="available"
-                    label="Available"
-                    value={values.available}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={touched.available && Boolean(errors.available)}
-                    helperText={touched.available && errors.available}
-                    variant="outlined"
-                    InputProps={inputProps} 
-                />
+                    area-label="Available"
+                    value={(values.available)}
+                    onChange={(e, v) => {
+                        setFieldValue("available", v);
+                        setFieldTouched("available", true, true);
+                        validateField("available");
+                    }}
+                    inputValue={input}
+                    onBlur={handleBlur}>
+                        <FormControlLabel value="true" control={<Radio/>} label="True"/>
+                        <FormControlLabel value="false" control={<Radio/>} label="False"/>
+                    </RadioGroup>
+                    
+                </FormControl>
 
                 {
                     (mode === "view") ? "" : <Button disabled={isSubmitting} 
@@ -187,7 +201,6 @@ const BookDetails = ({ startingMode, book, action }) => {
 };
 
 const options = ["Science Fiction", "Fantasy",  "Computing", "Mystery", "Horror"];
-const availableOpt = ["true", "false"];
 
 BookDetails.defaultProps = {
     book: { "id": null, title: "", authors: [], publishDate: "", rating: "", genre: "",

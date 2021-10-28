@@ -24,10 +24,7 @@ import { useAuth, ProvideAuth} from './useAuth';
 import { Formik } from 'formik';
 import { TextField } from '@mui/material';
 import { passwordYupSchema, passwordStrength, countChrOccurence } from './validationTools';
-import BookList from './BookList';
 import FilterBooksPage from './FilterBooks';
-import { useState } from 'react';
-import TablePagination from '@mui/material/TablePagination';
 import AppBar from '@mui/material/AppBar'
 import { Box } from '@mui/system';
 
@@ -244,6 +241,7 @@ const RegisterBox = () => {
 const AddBookPage = () => {
   const [login] = useAuth();
   return <BookDetails startingMode="create" action={(book) => addBook(book, login)}/>
+  
 }
 
 function App() {

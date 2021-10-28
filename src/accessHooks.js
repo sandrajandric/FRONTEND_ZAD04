@@ -315,7 +315,7 @@ export const updateBook = async (book, login, url="http://localhost:3081/app/boo
 }
 
 export const addBook = async (book, login) => {
-    fetch("http://localhost:3081/app/books/new", {
+   await fetch("http://localhost:3081/app/books/new", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
@@ -325,7 +325,7 @@ export const addBook = async (book, login) => {
     }).then(response => response.json())
     .then(data => {
         if(data.status === "ok") 
-            return [true, <Redirect to={{pathname: "/allbooks"}}/>];
+            return [true, ""];
         else return [false, data.body]
     })
 }
