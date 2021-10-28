@@ -86,18 +86,20 @@ const BookDetails = ({ startingMode, book, action }) => {
                     variant="outlined"
                     InputProps={inputProps}
                 />
-                <TextField
+                <Autocomplete
                     fullWidth
                     margin="normal"
                     name="genre"
                     label="Genre"
+                    options={options}
                     value={values.genre}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                        setFieldValue(e);
+                        setFieldTouched("genre", true, true);
+                        validateField("genre");
+                    }}
                     onBlur={handleBlur}
-                    error={touched.genre && Boolean(errors.genre)}
-                    helperText={touched.genre && errors.genre}
-                    variant="outlined"
-                    InputProps={inputProps}
+                    renderInput={(params) => <TextField {...params}/>}
                 />
                 <p/>
                  <DatePicker
@@ -183,6 +185,9 @@ const BookDetails = ({ startingMode, book, action }) => {
         </Formik>        
     </div>
 };
+
+const options = ["Science Fiction", "Fantasy",  "Computing", "Mystery", "Horror"];
+const availableOpt = ["true", "false"];
 
 BookDetails.defaultProps = {
     book: { "id": null, title: "", authors: [], publishDate: "", rating: "", genre: "",

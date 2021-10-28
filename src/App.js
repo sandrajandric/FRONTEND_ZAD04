@@ -2,7 +2,7 @@ import AdapterLuxon from '@mui/lab/AdapterLuxon';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
 import './App.css';
-import BookDetailsEdit from './BookDetailsEdit';
+import BookDetails from './BookDetails';
 import AllBooksPage from './AllBooksPage';
 import { BrowserRouter as Router, Link as RouterLink, 
   Switch, Route, useHistory, Redirect, 
@@ -243,7 +243,7 @@ const RegisterBox = () => {
 
 const AddBookPage = () => {
   const [login] = useAuth();
-  return <BookDetailsEdit startingMode="create" action={(book) => addBook(book, login)}/>
+  return <BookDetails startingMode="create" action={(book) => addBook(book, login)}/>
 }
 
 function App() {
