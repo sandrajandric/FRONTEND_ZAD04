@@ -315,7 +315,7 @@ export const updateBook = async (book, login, url="http://localhost:3081/app/boo
 }
 
 export const addBook = async (book, login) => {
-   await fetch("http://localhost:3081/app/books/new", {
+   fetch("http://localhost:3081/app/books/new", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
@@ -324,8 +324,7 @@ export const addBook = async (book, login) => {
         body: JSON.stringify(book)
     }).then(response => response.json())
     .then(data => {
-        if(data.status === "ok") 
-            return [true, ""];
+        if(data.status === "ok") return [true, ""];
         else return [false, data.body]
     })
 }
@@ -366,6 +365,30 @@ export const useBook = (id, url="http://localhost:3081/app/book") => {
     }, []);
 
     return [book, loading];
+}
+
+export const useBooks = () => {
+    const [books, setBooks] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [login] = useAuth();
+
+    useEffect( () => {
+        setLoading(true);
+        fetch("http://localhost:3081/app/books", {
+            method: "GET",
+            headers: {
+                'Authorization': `Bearer ${login.jwt}`
+            },
+        }).then(resp => resp.json())
+        .then(data => {
+            if(data.status === "ok"){
+                setBooks(data.body);
+                setLoading(false);
+            }
+        });
+    }, []);
+
+    return [books, loading];
 }
 
 

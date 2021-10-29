@@ -8,7 +8,7 @@ import { BrowserRouter as Router, Link as RouterLink,
   Switch, Route, useHistory, Redirect, 
   useLocation} from 'react-router-dom';
 
-import { Autocomplete, Button, Toolbar } from '@mui/material';
+import { Button, Toolbar } from '@mui/material';
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -24,7 +24,6 @@ import { useAuth, ProvideAuth} from './useAuth';
 import { Formik } from 'formik';
 import { TextField } from '@mui/material';
 import { passwordYupSchema, passwordStrength, countChrOccurence } from './validationTools';
-import FilterBooksPage from './FilterBooks';
 import AppBar from '@mui/material/AppBar'
 import { Box } from '@mui/system';
 
@@ -264,9 +263,6 @@ function App() {
               <Button component={RouterLink} to="/searchbyauthor" variant="contained">
               Pretraga po autoru
               </Button>
-              <Button  component={RouterLink} to="/filterbooks" variant="contained">
-                Filter
-              </Button>
 
               <AuthButton/>
               
@@ -291,14 +287,11 @@ function App() {
                 <PrivateRoute path="/searchbyauthor">
                   <BookSearchByAuthorPage/>
                 </PrivateRoute>
-                <PrivateRoute path="/book/new">
+                <PrivateRoute path="/books/new">
                   <AddBookPage/>
                 </PrivateRoute>
                 <PrivateRoute path="/book/:cid/:operation">
                   <BookDetailsPage/>
-                </PrivateRoute>
-                <PrivateRoute path="/filterbooks">
-                  <FilterBooksPage/>
                 </PrivateRoute>
                 <Route path="/">
                   <h1>EVIDENCIJA O KNJIGAMA</h1>

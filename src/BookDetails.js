@@ -7,9 +7,14 @@ import TextField from '@mui/material/TextField';
 import DatePicker from '@mui/lab/DatePicker'
 import { useHistory } from "react-router-dom";
 import Autocomplete from '@mui/material/Autocomplete';
-import { FormControl, FormControlLabel } from "@mui/material";
+import { FormControl, FormControlLabel, Table, TableBody, TableRow } from "@mui/material";
 import { RadioGroup } from "@mui/material";
 import Radio from '@mui/material/Radio';
+import AllBooksPage from "./AllBooksPage";
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import AuthorBooksPage from "./AuthorBooks";
 
 const BookDetails = ({ startingMode, book, action }) => {
     const [mode, setMode] = useState(startingMode);
@@ -191,12 +196,19 @@ const BookDetails = ({ startingMode, book, action }) => {
 
                 {
                     (mode === "view") ? "" : <Button disabled={isSubmitting} 
-                        color="primary" variant="contained" fullWidth type="submit">Snimi</Button>
+                        color="primary" variant="contained" fullWidth type="submit" >Snimi</Button>
+                        
+                }
+               {
+                    (mode === "view") ?  
+                        <AuthorBooksPage izbor={values.authors}/>
+                        : ""
+                        
                 }
             </form>
-            )}
-            
-        </Formik>        
+            )}       
+        </Formik> 
+ 
     </div>
 };
 
