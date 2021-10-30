@@ -15,7 +15,7 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
-import { addBook, postNewUser, usePagedBookList, deleteBook} from './accessHooks';
+import { addBook, postNewUser, usePagedBookList, deleteBook, useUsername} from './accessHooks';
 import BookDetailsPage from './BookDetailsPage';
 import BookSearchPage from './BookSearchPage';
 import BookSearchByAuthorPage from './BookSearchByAuthorPage';
@@ -26,7 +26,8 @@ import { TextField } from '@mui/material';
 import { passwordYupSchema, passwordStrength, countChrOccurence } from './validationTools';
 import AppBar from '@mui/material/AppBar'
 import { Box } from '@mui/system';
-
+import { useParams } from 'react-router';
+import React, {useState, useEffect} from 'react';
 
 
 const AuthButton = () => {
@@ -139,10 +140,12 @@ const LoginBox = () => {
   </div>
 }
 
+
 const RegisterBox = () => {
   const history = useHistory();
   const location = useLocation();
   const [login, error, signin, signout] = useAuth();
+
   
   let {from} = location.state || { from : { pathname: "/"}};
   return <div className="loginBox">
@@ -150,13 +153,13 @@ const RegisterBox = () => {
       <Formik
           initialValues={{username: "", password: "", passwordConfirmation: ""}}
           validationSchema={passwordYupSchema}
-          
           onSubmit={(values, { setSubmitting }) => {
+
             countChrOccurence(values.password);
             if (values.password === values.passwordConfirmation) {
               if (passwordStrength(values.password) >= 4) {
                   postNewUser(values.username, values.password);
-                  signin(values.username, values.password, () => {
+                 signin(values.username, values.password, () => {
                     setSubmitting(false);
                 }, () => {
                     history.replace(from);
@@ -173,7 +176,9 @@ const RegisterBox = () => {
                 return<Redirect to={{pathname: "/register", state: {from: location}}}/>
               }
             }
-          }}
+         
+          }
+          }
       >
           {({
             values,
@@ -239,7 +244,7 @@ const RegisterBox = () => {
 
 const AddBookPage = () => {
   const [login] = useAuth();
-  return <BookDetails startingMode="create" action={(book) => addBook(book, login)}/>
+  return <BookDetails startingMode="create" action={(book) => addBook(book,login)}/>
   
 }
 
@@ -257,6 +262,8 @@ function App() {
               <Button component={RouterLink} to="/allbooks" variant="contained" sx={{marginRight: "10px"}}>
                   Sve knjige
               </Button>
+              <Button component={RouterLink} to="/books/new" variant="contained">Dodaj</Button>
+
               <Button component={RouterLink} to="/searchbooks" variant="contained">
                 Pretraga
               </Button>
@@ -268,6 +275,7 @@ function App() {
               
             </Toolbar>
               </AppBar>
+
               </Box>
             </nav>
             <div className="mainContent">

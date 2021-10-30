@@ -315,7 +315,7 @@ export const updateBook = async (book, login, url="http://localhost:3081/app/boo
 }
 
 export const addBook = async (book, login) => {
-   fetch("http://localhost:3081/app/books/new", {
+    fetch("http://localhost:3081/app/books/new", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
@@ -392,3 +392,24 @@ export const useBooks = () => {
 }
 
 
+export const useUsername = (username) => {
+    const [login] = useAuth();
+
+
+    useEffect( () => {
+         fetch(`http://localhost:3081/app/checkUsername/${username}`, {
+             method: "GET",
+             headers: {
+                'Authorization': `Bearer ${login.jwt}`
+            },
+        }).then(resp => resp.json())
+        .then(data => {
+            if(data.status === "ok"){
+               return true;
+            }  else {
+                return false;
+            }
+        });
+    }, [username]);
+
+    }

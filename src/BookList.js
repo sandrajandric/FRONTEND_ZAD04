@@ -25,8 +25,8 @@ import './BookList.css';
     return (<div className="booklist">
       {list.map((e) => (
             <div className="card" key={e.id}>
-              <Card  variant="outlined">
-              <CardContent>
+              <Card component="span" variant="outlined">
+              <CardContent component="span">
                 <h4>{e.title}</h4>
                 <h5>{e.authors}</h5>
                 <span className="span">

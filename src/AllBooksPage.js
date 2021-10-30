@@ -13,6 +13,8 @@ import { bookYupSchema } from "./validationTools";
 import { TextField } from "@mui/material";
 import { useHistory } from "react-router";
 import { Tabs, Tab, Box, Typography } from "@mui/material";
+import BookDetails from "./BookDetails";
+import { addBook } from "./accessHooks";
 
 
 const AllBooksPage = () => {
@@ -56,6 +58,7 @@ const AllBooksPage = () => {
         </Box>
         <TabPanel value={value} index={0}>
             <div>
+
                 <BookList list={list} onDelete={(id) => {
                 deleteBook(id, login);
                 reload();
@@ -151,7 +154,7 @@ function TabPanel(props) {
   }
 
 
-  
+
 
 export default AllBooksPage;
 

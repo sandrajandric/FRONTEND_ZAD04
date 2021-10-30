@@ -33,7 +33,6 @@ const BookSearchPage = () => {
     }else{
         return <div>
             <Box sx={{display: "flex", flexDirection:"row", padding: "10px", alignItems: "baseline"}}>
-            <Button component={RouterLink} to="/book/new" variant="contained">Dodaj</Button>
             <TextField
                     sx={{flexGrow: 1, marginLeft: "60px"}}
                     margin="normal"

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Formik } from 'formik'
+import { Formik } from 'formik'
 import './BookDetails.css';
 import { bookYupSchema, toStandardTime } from "./validationTools";
 import Button from '@mui/material/Button';
@@ -10,16 +10,28 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { FormControl, FormControlLabel, Table, TableBody, TableRow } from "@mui/material";
 import { RadioGroup } from "@mui/material";
 import Radio from '@mui/material/Radio';
-import AllBooksPage from "./AllBooksPage";
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import AuthorBooksPage from "./AuthorBooks";
+import { usePagedBookList } from "./accessHooks";
+import BookList from "./BookList";
+import { TablePagination } from "@mui/material";
 
 const BookDetails = ({ startingMode, book, action }) => {
     const [mode, setMode] = useState(startingMode);
     const [input, setInput] = useState('');
-
+    const [
+        list,
+        location,
+        loading,
+        error,
+        pages,
+        page,
+        forward,
+        back,
+        goToPage,
+        length,
+        pageSize,
+        setPageSize,
+        reload
+    ] = usePagedBookList(10);
     const history = useHistory();
 
     let message = "";
@@ -89,7 +101,7 @@ const BookDetails = ({ startingMode, book, action }) => {
                     margin="normal"
                     name="authors"
                     label="Autori"
-                    value={values.authors}
+                    value={values.authors.join(", ")}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     error={touched.authors && Boolean(errors.authors)}
@@ -103,6 +115,7 @@ const BookDetails = ({ startingMode, book, action }) => {
                     name="genre"
                     label="Genre"
                     options={options}
+                    isOptionEqualToValue={(o, v) => o.genre === v.genre }
                     value={values.genre}
                     onChange={(e, v) => {
                         setFieldValue("genre", v);
@@ -200,10 +213,25 @@ const BookDetails = ({ startingMode, book, action }) => {
                         
                 }
                {
-                    (mode === "view") ?  
-                        <AuthorBooksPage izbor={values.authors}/>
-                        : ""
-                        
+                (mode === "view") ?  
+                <div>
+                    {console.log(values.authors.toString())}
+                     <BookList list={list.filter((n) => n.authors.toString() === values.authors.toString())}/>
+                        <TablePagination
+                            component="div"
+                            count={length}
+                            page={page-1}
+                            onPageChange={(e, p) => goToPage(p)}
+                            rowsPerPage={pageSize}
+                            onRowsPerPageChange={(e) => {
+                            setPageSize(parseInt(e.target.value, 10));
+                            }}
+                            labelDisplayedRows={({from, to, count, page}) => `Prikazujem stranicu ${page+1} (${from}-${to+1} od ukupno ${count})`}
+                            labelRowsPerPage="Kartica po stranici: "
+                        />
+                </div>
+                   : ""
+                       
                 }
             </form>
             )}       
@@ -215,9 +243,10 @@ const BookDetails = ({ startingMode, book, action }) => {
 const options = ["Science Fiction", "Fantasy",  "Computing", "Mystery", "Horror"];
 
 BookDetails.defaultProps = {
-    book: { "id": null, title: "", authors: [], publishDate: "", rating: "", genre: "",
+    book: { "id": null, title: "", authors: "", publishDate: "", rating: "", genre: options[0],
             isbn: "", available: true, pages: null },
     startingMode: "view"
 }
 
 export default BookDetails;
+/*      */
