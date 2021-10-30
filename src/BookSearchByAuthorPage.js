@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import { deleteBook, usePagedSearchBookListByAuthor} from "./accessHooks";
 import BookList from "./BookList";
 import TablePagination from '@mui/material/TablePagination';
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import { TextField } from "@mui/material";
 import { Box } from "@mui/material";
 import { useAuth } from "./useAuth";
@@ -27,7 +27,7 @@ const BookSearchByAuthorPage = () => {
         reload
     ] = usePagedSearchBookListByAuthor(10, searchQuery);
     if(loading){
-        return <h3>Loading...</h3>;
+        return <CircularProgress/>;
     }else{
         return <div>
             <Box sx={{display: "flex", flexDirection:"row", padding: "10px", alignItems: "baseline"}}>

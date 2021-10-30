@@ -101,7 +101,7 @@ const BookDetails = ({ startingMode, book, action }) => {
                     margin="normal"
                     name="authors"
                     label="Autori"
-                    value={values.authors.split(",")}
+                    value={values.authors}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     error={touched.authors && Boolean(errors.authors)}
@@ -194,7 +194,7 @@ const BookDetails = ({ startingMode, book, action }) => {
                     margin="normal"
                     name="available"
                     area-label="Available"
-                    value={values.available}
+                    value={(values.available)}
                     onChange={(e, v) => {
                         setFieldValue("available", v);
                         setFieldTouched("available", true, true);
@@ -216,6 +216,7 @@ const BookDetails = ({ startingMode, book, action }) => {
                {
                 (mode === "view") ?  
                 <div>
+                    {console.log(values.genre)}
                      <BookList list={list.filter((n) => n.authors.toString().includes(values.authors.toString()))}/>
                         <TablePagination
                             component="div"
@@ -243,7 +244,7 @@ const BookDetails = ({ startingMode, book, action }) => {
 const options = ["Science Fiction", "Fantasy",  "Computing", "Mystery", "Horror"];
 
 BookDetails.defaultProps = {
-    book: { "id": null, title: "", authors: "", publishDate: "", rating: "", genre: options[0],
+    book: { "id": null, title: "", authors: [], publishDate: "", rating: "", genre: options[0],
             isbn: "", available: true, pages: null },
     startingMode: "view"
 }
