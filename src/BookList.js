@@ -28,7 +28,7 @@ import './BookList.css';
               <Card component="span" variant="outlined">
               <CardContent component="span">
                 <h4>{e.title}</h4>
-                <h5>{e.authors}</h5>
+                <h5>{e.authors.toString()}</h5>
                 <span className="span">
                   <Rating className="rating" value={Number(e.rating)} readOnly precision={0.5} emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}/>
                   <TableDropdown className="dropdown" text="..."

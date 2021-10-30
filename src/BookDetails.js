@@ -101,7 +101,7 @@ const BookDetails = ({ startingMode, book, action }) => {
                     margin="normal"
                     name="authors"
                     label="Autori"
-                    value={values.authors.join(", ")}
+                    value={values.authors.toString()}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     error={touched.authors && Boolean(errors.authors)}
@@ -216,7 +216,7 @@ const BookDetails = ({ startingMode, book, action }) => {
                 (mode === "view") ?  
                 <div>
                     {console.log(values.authors.toString())}
-                     <BookList list={list.filter((n) => n.authors.toString() === values.authors.toString())}/>
+                     <BookList list={list.filter((n) => n.authors.toString() == values.authors.toString())}/>
                         <TablePagination
                             component="div"
                             count={length}
