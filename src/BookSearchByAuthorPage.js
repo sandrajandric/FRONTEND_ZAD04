@@ -1,9 +1,8 @@
-import React, {useState, useMemo, useRef, useEffect} from "react";
-import { usePagedBookList, deleteBook, usePagedSearchBookList, usePagedSearchBookListByAuthor} from "./accessHooks";
+import React, {useState} from "react";
+import { deleteBook, usePagedSearchBookListByAuthor} from "./accessHooks";
 import BookList from "./BookList";
 import TablePagination from '@mui/material/TablePagination';
 import { Button } from "@mui/material";
-import {Link as RouterLink} from 'react-router-dom';
 import { TextField } from "@mui/material";
 import { Box } from "@mui/material";
 import { useAuth } from "./useAuth";

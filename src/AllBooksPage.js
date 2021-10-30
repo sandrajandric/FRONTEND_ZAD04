@@ -2,19 +2,12 @@ import React, {useState} from "react";
 import { usePagedBookList, deleteBook} from "./accessHooks";
 import BookList from "./BookList";
 import TablePagination from '@mui/material/TablePagination';
-import { Button } from "@mui/material";
-import {Link as RouterLink} from 'react-router-dom';
 
 import {useAuth} from './useAuth';
 import { CircularProgress } from "@mui/material";
-import { Autocomplete } from "@mui/material";
-import { Formik } from "formik";
-import { bookYupSchema } from "./validationTools";
-import { TextField } from "@mui/material";
-import { useHistory } from "react-router";
+
 import { Tabs, Tab, Box, Typography } from "@mui/material";
-import BookDetails from "./BookDetails";
-import { addBook } from "./accessHooks";
+
 
 
 const AllBooksPage = () => {
@@ -124,7 +117,6 @@ const AllBooksPage = () => {
     }
 }
 
-const options = ["Science Fiction", "Fantasy",  "Computing", "Mystery", "Horror"];
 
 function a11yProps(index) {
   return {
@@ -146,7 +138,7 @@ function TabPanel(props) {
       >
         {value === index && (
           <Box sx={{ p: 3 }}>
-            <Typography>{children}</Typography>
+            <Typography component="span">{children}</Typography>
           </Box>
         )}
       </div>

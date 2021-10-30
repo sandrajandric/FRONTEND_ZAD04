@@ -7,7 +7,7 @@ import TextField from '@mui/material/TextField';
 import DatePicker from '@mui/lab/DatePicker'
 import { useHistory } from "react-router-dom";
 import Autocomplete from '@mui/material/Autocomplete';
-import { FormControl, FormControlLabel, Table, TableBody, TableRow } from "@mui/material";
+import { FormControl, FormControlLabel } from "@mui/material";
 import { RadioGroup } from "@mui/material";
 import Radio from '@mui/material/Radio';
 import { usePagedBookList } from "./accessHooks";
@@ -193,7 +193,7 @@ const BookDetails = ({ startingMode, book, action }) => {
                     margin="normal"
                     name="available"
                     area-label="Available"
-                    value={(values.available)}
+                    value={Boolean(values.available)}
                     onChange={(e, v) => {
                         setFieldValue("available", v);
                         setFieldTouched("available", true, true);

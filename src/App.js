@@ -15,7 +15,7 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
-import { addBook, postNewUser, usePagedBookList, deleteBook, useUsername} from './accessHooks';
+import { addBook, postNewUser } from './accessHooks';
 import BookDetailsPage from './BookDetailsPage';
 import BookSearchPage from './BookSearchPage';
 import BookSearchByAuthorPage from './BookSearchByAuthorPage';
@@ -26,8 +26,7 @@ import { TextField } from '@mui/material';
 import { passwordYupSchema, passwordStrength, countChrOccurence } from './validationTools';
 import AppBar from '@mui/material/AppBar'
 import { Box } from '@mui/system';
-import { useParams } from 'react-router';
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 
 
 const AuthButton = () => {
@@ -154,12 +153,7 @@ const RegisterBox = () => {
           initialValues={{username: "", password: "", passwordConfirmation: ""}}
           validationSchema={passwordYupSchema}
           onSubmit={(values, { setSubmitting }) => {
-            if ((fetch(`http://localhost:3081/app/checkUsername/${values.username}`, {
-              method: "GET",
-              headers: {
-                'Content-Type': 'application/json'
-              },
-         }).then(resp => resp.json()) === false)) {
+            if (fetch(`http://localhost:3081/app/checkUsername/${values.username}`)) {
             countChrOccurence(values.password);
             if (values.password === values.passwordConfirmation) {
               if (passwordStrength(values.password) >= 4) {
