@@ -215,8 +215,7 @@ const BookDetails = ({ startingMode, book, action }) => {
                {
                 (mode === "view") ?  
                 <div>
-                    {console.log(values.authors.toString())}
-                     <BookList list={list.filter((n) => n.authors.toString() == values.authors.toString())}/>
+                     <BookList list={list.filter((n) => n.authors.toString().includes(values.authors.toString()))}/>
                         <TablePagination
                             component="div"
                             count={length}

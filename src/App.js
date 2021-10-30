@@ -154,7 +154,12 @@ const RegisterBox = () => {
           initialValues={{username: "", password: "", passwordConfirmation: ""}}
           validationSchema={passwordYupSchema}
           onSubmit={(values, { setSubmitting }) => {
-
+            if ((fetch(`http://localhost:3081/app/checkUsername/${values.username}`, {
+              method: "GET",
+              headers: {
+                'Content-Type': 'application/json'
+              },
+         }).then(resp => resp.json()) === false)) {
             countChrOccurence(values.password);
             if (values.password === values.passwordConfirmation) {
               if (passwordStrength(values.password) >= 4) {
@@ -176,9 +181,14 @@ const RegisterBox = () => {
                 return<Redirect to={{pathname: "/register", state: {from: location}}}/>
               }
             }
+          } else {
+            alert("Username vec postoji!")
+              if (window.confirm) {
+                return<Redirect to={{pathname: "/register", state: {from: location}}}/>
+              }
+          }
          
-          }
-          }
+          }}
       >
           {({
             values,
