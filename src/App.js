@@ -27,7 +27,28 @@ import { passwordYupSchema, passwordStrength, countChrOccurence } from './valida
 import AppBar from '@mui/material/AppBar'
 import { Box } from '@mui/system';
 import React from 'react';
+import { createTheme } from '@mui/material';
+import { ThemeProvider } from '@emotion/react';
+import { Fab } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      light: '#ef6694',
+      main: '#ec407a',
+      dark: '#a52c55',
+      contrastText: '#ffffff',
+    },
+    secondary: {
+      light: '#f381a7',
+      main: '#f06292',
+      dark: '#a84466',
+      contrastText: '#ffffff',
+    }
+  }
+})
 
 const AuthButton = () => {
   const [login, error, signin, signout] = useAuth();
@@ -252,35 +273,42 @@ const AddBookPage = () => {
   
 }
 
+const fabStyle = {
+  right: 1,
+  bottom: 20,
+  position: 'fixed'
+};
+
 function App() {
   return (
-
+    <ThemeProvider theme={theme}>
     <LocalizationProvider dateAdapter={AdapterLuxon}>
-      <ProvideAuth>
-      <Router>
+      <ProvideAuth  >
+      <Router >
           <div className="main">
             <nav>
             <Box sx={{ flexGrow: 1 }}>
             <AppBar position="sticky">
              <Toolbar >
-              <Button component={RouterLink} to="/allbooks" variant="contained" sx={{marginRight: "10px"}}>
+              <Button component={RouterLink} to="/allbooks" variant="contained" disableElevation sx={{marginRight: "10px"}}>
                   Sve knjige
               </Button>
-              <Button component={RouterLink} to="/books/new" variant="contained">Dodaj</Button>
-
-              <Button component={RouterLink} to="/searchbooks" variant="contained">
+              <Button component={RouterLink} to="/searchbooks" variant="contained" disableElevation>
                 Pretraga
               </Button>
-              <Button component={RouterLink} to="/searchbyauthor" variant="contained">
+              <Button component={RouterLink} to="/searchbyauthor" variant="contained" disableElevation>
               Pretraga po autoru
               </Button>
-
-              <AuthButton/>
-              
+              <AuthButton />   
             </Toolbar>
               </AppBar>
-
               </Box>
+              <p/>
+              <p/>
+              <p/>
+              <Fab style={fabStyle} color="primary" aria-label="add" component={RouterLink} to="/addbook">
+               <AddIcon />
+              </Fab>
             </nav>
             <div className="mainContent">
               <Switch>
@@ -299,12 +327,12 @@ function App() {
                 <PrivateRoute path="/searchbyauthor">
                   <BookSearchByAuthorPage/>
                 </PrivateRoute>
-                <PrivateRoute path="/books/new">
-                  <AddBookPage/>
-                </PrivateRoute>
                 <PrivateRoute path="/book/:cid/:operation">
                   <BookDetailsPage/>
                 </PrivateRoute>
+                <PrivateRoute path="/addbook">
+                  <AddBookPage/>
+                  </PrivateRoute>
                 <Route path="/">
                   <h1>EVIDENCIJA O KNJIGAMA</h1>
                 </Route>
@@ -314,6 +342,7 @@ function App() {
         </Router>
       </ProvideAuth>
     </LocalizationProvider>
+    </ThemeProvider>
   );
 }
 

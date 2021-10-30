@@ -101,7 +101,7 @@ const BookDetails = ({ startingMode, book, action }) => {
                     margin="normal"
                     name="authors"
                     label="Autori"
-                    value={values.authors.toString()}
+                    value={values.authors.split(",")}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     error={touched.authors && Boolean(errors.authors)}
@@ -189,17 +189,18 @@ const BookDetails = ({ startingMode, book, action }) => {
                     InputProps={inputProps}
                 />
                  <FormControl>
+                     
                     <RadioGroup
                     margin="normal"
                     name="available"
                     area-label="Available"
-                    value={Boolean(values.available)}
+                    value={values.available}
                     onChange={(e, v) => {
                         setFieldValue("available", v);
                         setFieldTouched("available", true, true);
                         validateField("available");
                     }}
-                    inputValue={input}
+                    inputvalue={input}
                     onBlur={handleBlur}>
                         <FormControlLabel value="true" control={<Radio/>} label="True"/>
                         <FormControlLabel value="false" control={<Radio/>} label="False"/>

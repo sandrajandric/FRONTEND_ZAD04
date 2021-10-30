@@ -18,8 +18,7 @@ const BookDetailsPage = () => {
             return <BookDetails 
             book={book} 
             startingMode={operation}
-            action={(operation === "edit") ? (book) => updateBook(book, login) : undefined}
-                     
+            action={((operation === "edit") ? (book) => updateBook(book, login) : undefined)}
                     />
     }
 };

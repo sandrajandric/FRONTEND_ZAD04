@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { usePagedBookList, deleteBook} from "./accessHooks";
+import { usePagedBookList, deleteBook, addBook} from "./accessHooks";
 import BookList from "./BookList";
 import TablePagination from '@mui/material/TablePagination';
 
@@ -36,7 +36,9 @@ const AllBooksPage = () => {
     if(loading){
         return <CircularProgress/>;
     }else{
-        return <div >
+        return (
+        <div className="boja">
+
             <div>
             <Box sx={{width: "100%"}}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -49,6 +51,8 @@ const AllBooksPage = () => {
             <Tab label="horror" {...a11yProps(5)}/>
         </Tabs> 
         </Box>
+        <p/>
+        
         <TabPanel value={value} index={0}>
             <div>
 
@@ -113,7 +117,7 @@ const AllBooksPage = () => {
                 labelDisplayedRows={({from, to, count, page}) => `Prikazujem stranicu ${page+1} (${from}-${to+1} od ukupno ${count})`}
                 labelRowsPerPage="Kartica po stranici: "
             />
-        </div>
+        </div>)
     }
 }
 
