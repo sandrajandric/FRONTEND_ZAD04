@@ -122,7 +122,7 @@ const BookDetails = ({ startingMode, book, action }) => {
                         setFieldTouched("genre", true, true);
                         validateField("genre");
                     }}
-                    inputValue={input}
+                    inputprops={input} //
                     onInputChange={(e, v) => {
                         setInput(v)
                     }}
@@ -194,13 +194,13 @@ const BookDetails = ({ startingMode, book, action }) => {
                     margin="normal"
                     name="available"
                     area-label="Available"
-                    value={(values.available)}
+                    value={(values.available.toString())}
                     onChange={(e, v) => {
                         setFieldValue("available", v);
                         setFieldTouched("available", true, true);
                         validateField("available");
                     }}
-                    inputvalue={input}
+                    inputprops={input}
                     onBlur={handleBlur}>
                         <FormControlLabel value="true" control={<Radio/>} label="True"/>
                         <FormControlLabel value="false" control={<Radio/>} label="False"/>
@@ -209,8 +209,8 @@ const BookDetails = ({ startingMode, book, action }) => {
                 </FormControl>
 
                 {
-                    (mode === "view") ? "" : <Button disabled={isSubmitting} 
-                        color="primary" variant="contained" fullWidth type="submit" >Snimi</Button>
+                    (mode === "view") ? "" : <div><Button disabled={isSubmitting} 
+                        color="primary" variant="contained" fullWidth type="submit" >Snimi</Button>{console.log({isSubmitting})}</div>
                         
                 }
                {

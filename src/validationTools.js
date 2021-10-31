@@ -1,10 +1,32 @@
 import * as yup from 'yup';
 import { DateTime } from 'luxon';
+import axios from 'axios';
 
 
 export const passwordYupSchema = yup.object({
     password: yup.string().required("No password provided")
         .matches(/^(?=.*[A-Z].*[A-Z])(?=.*[a-z].*[a-z])(?=.*[0-9])(?=.*[.,?!:;-]).{12,}$/, "Must contain at least two capital letters, two lowercase letters, one number, one special character")
+    });
+
+export const usernameYupSchema = yup.object({
+    username: yup.string()
+        .required("Username polje je obavezno")
+        .test('Unique username', 'Username already in use',
+            function(value) {fetch(`http://localhost:3081/app/checkUsername/${value}`, {
+                method: "GET",
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+            }).then(resp => resp.json())
+            .then(data => {
+                if(data.body === true) {
+              alert("Username already taken!");
+              if (window.confirm) {
+                window.location.reload(true);
+              }
+            }
+            })
+        })
     });
 
  export const bookYupSchema = yup.object({
@@ -81,3 +103,4 @@ export function passwordStrength (password) {
     
     return rank.VERY_STRONG;
 }
+

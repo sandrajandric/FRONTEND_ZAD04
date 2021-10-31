@@ -23,7 +23,7 @@ import BookSearchByAuthorPage from './BookSearchByAuthorPage';
 import { useAuth, ProvideAuth} from './useAuth';
 import { Formik } from 'formik';
 import { TextField } from '@mui/material';
-import { passwordYupSchema, passwordStrength, countChrOccurence } from './validationTools';
+import { passwordYupSchema, passwordStrength, countChrOccurence, usernameYupSchema } from './validationTools';
 import AppBar from '@mui/material/AppBar'
 import { Box } from '@mui/system';
 import React from 'react';
@@ -31,6 +31,8 @@ import { createTheme } from '@mui/material';
 import { ThemeProvider } from '@emotion/react';
 import { Fab } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import axios from 'axios';
+
 
 
 const theme = createTheme({
@@ -160,7 +162,6 @@ const LoginBox = () => {
   </div>
 }
 
-
 const RegisterBox = () => {
   const history = useHistory();
   const location = useLocation();
@@ -172,23 +173,22 @@ const RegisterBox = () => {
       <h3>Register Forma</h3>
       <Formik
           initialValues={{username: "", password: "", passwordConfirmation: ""}}
-          validationSchema={passwordYupSchema}
+          validationSchema={passwordYupSchema, usernameYupSchema}
           onSubmit={(values, { setSubmitting }) => {
-            if (fetch(`http://localhost:3081/app/checkUsername/${values.username}`)) {
-            countChrOccurence(values.password);
             if (values.password === values.passwordConfirmation) {
+              countChrOccurence(values.password);
               if (passwordStrength(values.password) >= 4) {
                   postNewUser(values.username, values.password);
-                 signin(values.username, values.password, () => {
+                  signin(values.username, values.password, () => {
                     setSubmitting(false);
                 }, () => {
                     history.replace(from);
                 });
               } else {
                 alert("Lozinka mora biti minimum 60% ukupnog kvaliteta!")
-              if (window.confirm) {
-                return<Redirect to={{pathname: "/register", state: {from: location}}}/>
-              }
+                if (window.confirm) {
+                  return<Redirect to={{pathname: "/register", state: {from: location}}}/>
+                }
               }
             } else {
               alert("Lozinke moraju da budu jednake!")
@@ -196,14 +196,8 @@ const RegisterBox = () => {
                 return<Redirect to={{pathname: "/register", state: {from: location}}}/>
               }
             }
-          } else {
-            alert("Username vec postoji!")
-              if (window.confirm) {
-                return<Redirect to={{pathname: "/register", state: {from: location}}}/>
-              }
           }
-         
-          }}
+        }
       >
           {({
             values,
@@ -306,7 +300,7 @@ function App() {
               <p/>
               <p/>
               <p/>
-              <Fab style={fabStyle} color="primary" aria-label="add" component={RouterLink} to="/addbook">
+              <Fab style={fabStyle} color="primary" aria-label="add" component={RouterLink} to="/book/new">
                <AddIcon />
               </Fab>
             </nav>
@@ -330,7 +324,7 @@ function App() {
                 <PrivateRoute path="/book/:cid/:operation">
                   <BookDetailsPage/>
                 </PrivateRoute>
-                <PrivateRoute path="/addbook">
+                <PrivateRoute path="/book/new">
                   <AddBookPage/>
                   </PrivateRoute>
                 <Route path="/">

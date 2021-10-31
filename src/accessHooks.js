@@ -314,19 +314,18 @@ export const updateBook = async (book, login, url="http://localhost:3081/app/boo
     else return [false, data.body]
 }
 
-export const addBook = async (book, login) => {
-    fetch("http://localhost:3081/app/books/new", {
+export const addBook = async (book, login, url="http://localhost:3081/app/books") => {
+    const resp = await fetch(`${url}/new`, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${login.jwt}`
         },
         body: JSON.stringify(book)
-    }).then(response => response.json())
-    .then(data => {
-        if(data.status === "ok") return [true, ""];
-        else return [false, data.body]
-    })
+    });
+    const data = await resp.json();
+    if (data.status === "ok") return [true,""];
+    else return [false, data.body];
 }
 export const postNewUser = async (username, password) => {
     fetch("http://localhost:3081/app/register", {
@@ -366,4 +365,6 @@ export const useBook = (id, url="http://localhost:3081/app/book") => {
 
     return [book, loading];
 }
+
+
 
