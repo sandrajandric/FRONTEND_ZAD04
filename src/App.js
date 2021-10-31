@@ -23,7 +23,7 @@ import BookSearchByAuthorPage from './BookSearchByAuthorPage';
 import { useAuth, ProvideAuth} from './useAuth';
 import { Formik } from 'formik';
 import { TextField } from '@mui/material';
-import { passwordYupSchema, passwordStrength, countChrOccurence, usernameYupSchema } from './validationTools';
+import { usernamePasswordYupSchema, passwordStrength, countChrOccurence } from './validationTools';
 import AppBar from '@mui/material/AppBar'
 import { Box } from '@mui/system';
 import React from 'react';
@@ -173,17 +173,14 @@ const RegisterBox = () => {
       <h3>Register Forma</h3>
       <Formik
           initialValues={{username: "", password: "", passwordConfirmation: ""}}
-          validationSchema={passwordYupSchema, usernameYupSchema}
+          validationSchema={usernamePasswordYupSchema}
           onSubmit={(values, { setSubmitting }) => {
+            countChrOccurence(values.password);
             if (values.password === values.passwordConfirmation) {
-              countChrOccurence(values.password);
               if (passwordStrength(values.password) >= 4) {
                   postNewUser(values.username, values.password);
-                  signin(values.username, values.password, () => {
                     setSubmitting(false);
-                }, () => {
                     history.replace(from);
-                });
               } else {
                 alert("Lozinka mora biti minimum 60% ukupnog kvaliteta!")
                 if (window.confirm) {
@@ -212,14 +209,18 @@ const RegisterBox = () => {
             isSubmitting
           }) => (<div>
               <form name="username" onSubmit={handleSubmit}>
-                  <TextField
+                  <TextField 
                     fullWidth 
+                    id="username_id"
                     variant="outlined" 
                     name="username" 
                     value={values.username} 
                     label="Korisničko ime" 
                     onChange={handleChange}
-                  /><br/>
+                    error={touched.username && Boolean(errors.username) }
+
+                  />
+                  <br/>
                   <TextField 
                     fullWidth
                     variant="outlined" 
