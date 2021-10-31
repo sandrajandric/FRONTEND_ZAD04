@@ -4,9 +4,11 @@ import { DateTime } from 'luxon';
 export const usernamePasswordYupSchema = yup.object({
     password: yup.string().required("No password provided")
         .matches(/^(?=.*[A-Z].*[A-Z])(?=.*[a-z].*[a-z])(?=.*[0-9])(?=.*[.,?!:;-]).{12,}$/, "Must contain at least two capital letters, two lowercase letters, one number, one special character"),
-    /* username: yup.string().required("Username polje je obavezno")
+     username: yup.string().required("Username polje je obavezno")
         .test(
-            function(value) {fetch(`http://localhost:3081/app/checkUsername/${value}`, {
+            function(value) {
+                return new Promise ((resolve, reject) => {
+                    fetch(`http://localhost:3081/app/checkUsername/${value}`, {
                 method: "GET",
                 headers: {
                   'Content-Type': 'application/json'
@@ -16,11 +18,14 @@ export const usernamePasswordYupSchema = yup.object({
                 if(data.body === true) {
                   alert("Korisnicko ime je zauzeto!");
                   window.location.reload();
+                } else {
+                    resolve(true)
                 }
             })
-        }) */
-    });
+        }) 
+    }),
 
+});
 
  export const bookYupSchema = yup.object({
     id: yup.number().required().positive().integer("ID mora biti ceo broj"),
