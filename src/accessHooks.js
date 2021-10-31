@@ -310,23 +310,31 @@ export const updateBook = async (book, login, url="http://localhost:3081/app/boo
         body: JSON.stringify(book)
     });
     const data = await resp.json();
+    console.log(data.body);
     if(data.status === "ok") return [true, ""];
     else return [false, data.body]
 }
 
-export const addBook = async (book, login, url="http://localhost:3081/app/books") => {
-    const resp = await fetch(`${url}/new`, {
+export const addBook = async (book, login) => {
+    const resp = await fetch("http://localhost:3081/app/books/new", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${login.jwt}`
         },
         body: JSON.stringify(book)
-    });
-    const data = await resp.json();
-    if (data.status === "ok") return [true,""];
-    else return [false, data.body];
+        })        .catch(error => {
+            console.error('There was an error!', error);
+        });;
+        const data = await resp.json();
+        console.log(data.body);
+        if (data.status === "ok") return [true,""];
+        else return [false, data.body];
+
+    
 }
+    
+
 export const postNewUser = async (username, password) => {
     fetch("http://localhost:3081/app/register", {
         method: "POST",

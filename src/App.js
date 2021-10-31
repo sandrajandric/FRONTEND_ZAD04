@@ -31,7 +31,6 @@ import { createTheme } from '@mui/material';
 import { ThemeProvider } from '@emotion/react';
 import { Fab } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import axios from 'axios';
 
 
 
@@ -264,8 +263,7 @@ const RegisterBox = () => {
 
 const AddBookPage = () => {
   const [login] = useAuth();
-  return <BookDetails startingMode="create" action={(book) => addBook(book,login)}/>
-  
+  return <BookDetails startingMode="create" action={(book) => addBook(book, login)}/>
 }
 
 const fabStyle = {

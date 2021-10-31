@@ -16,6 +16,7 @@ import { TablePagination } from "@mui/material";
 
 const BookDetails = ({ startingMode, book, action }) => {
     const [mode, setMode] = useState(startingMode);
+    const history = useHistory();
     const [input, setInput] = useState('');
     const [
         list,
@@ -32,7 +33,6 @@ const BookDetails = ({ startingMode, book, action }) => {
         setPageSize,
         reload
     ] = usePagedBookList(10);
-    const history = useHistory();
 
     let message = "";
     let inputProps = {}
@@ -210,13 +210,12 @@ const BookDetails = ({ startingMode, book, action }) => {
 
                 {
                     (mode === "view") ? "" : <div><Button disabled={isSubmitting} 
-                        color="primary" variant="contained" fullWidth type="submit" >Snimi</Button>{console.log({isSubmitting})}</div>
+                        color="primary" variant="contained" fullWidth type="submit">Snimi</Button></div>
                         
                 }
                {
                 (mode === "view") ?  
                 <div>
-                    {console.log(values.genre)}
                      <BookList list={list.filter((n) => n.authors.toString().includes(values.authors.toString()))}/>
                         <TablePagination
                             component="div"
@@ -250,4 +249,3 @@ BookDetails.defaultProps = {
 }
 
 export default BookDetails;
-/*      */
