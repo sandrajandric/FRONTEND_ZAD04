@@ -1,12 +1,10 @@
 import React, {useState} from "react";
 import { usePagedBookList, deleteBook, addBook} from "./accessHooks";
 import BookList from "./BookList";
-import TablePagination from '@mui/material/TablePagination';
 
 import {useAuth} from './useAuth';
-import { CircularProgress } from "@mui/material";
-
-import { Tabs, Tab, Box, Typography } from "@mui/material";
+import { Tabs, Tab, Box, Typography, CircularProgress } from "@mui/material";
+import TablePagination from '@mui/material/TablePagination';
 
 
 

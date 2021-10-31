@@ -27,9 +27,8 @@ import { usernamePasswordYupSchema, passwordStrength, countChrOccurence } from '
 import AppBar from '@mui/material/AppBar'
 import { Box } from '@mui/system';
 import React from 'react';
-import { createTheme } from '@mui/material';
+import { createTheme, Fab } from '@mui/material';
 import { ThemeProvider } from '@emotion/react';
-import { Fab } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
 

@@ -2,9 +2,8 @@ import React, {useState} from "react";
 import { deleteBook, usePagedSearchBookListByAuthor} from "./accessHooks";
 import BookList from "./BookList";
 import TablePagination from '@mui/material/TablePagination';
-import { Button, CircularProgress } from "@mui/material";
+import { Button, CircularProgress, Box } from "@mui/material";
 import { TextField } from "@mui/material";
-import { Box } from "@mui/material";
 import { useAuth } from "./useAuth";
 
 const BookSearchByAuthorPage = () => {
